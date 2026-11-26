@@ -1,7 +1,12 @@
 # Packages
 
-No packages are implemented or published yet.
+Four independently loadable source modules are implemented. Each is a single strict Luau file without runtime dependencies.
 
-The first authorised implementation will live in `packages/inventory/`. It will contain its source, behaviour tests and usage documentation. Additional package directories will be created when their designs are ready for implementation; the repository does not create empty modules for every roadmap item.
+| Package | Source | API guide |
+| --- | --- | --- |
+| Inventory and equipment | [Inventory.luau](inventory/src/Inventory.luau) | [Inventory](inventory/README.md) |
+| Experience and progression | [Progression.luau](progression/src/Progression.luau) | [Progression](progression/README.md) |
+| Combat and damage | [Combat.luau](combat/src/Combat.luau) | [Combat](combat/README.md) |
+| Economy and shops | [Economy.luau](economy/src/Economy.luau) | [Economy](economy/README.md) |
 
-See the [architecture](../docs/architecture.md), [inventory design](../docs/design/inventory.md) and [roadmap](../ROADMAP.md). Package-manager names, manifests and install commands will be introduced only after a working, verified distribution exists.
+There is no package-manager publication or tagged release. Load the source directly using the [usage guide](../docs/usage.md). The modules are checked in standalone Luau; their intended Roblox ModuleScript loading pattern has not been executed in Studio.
