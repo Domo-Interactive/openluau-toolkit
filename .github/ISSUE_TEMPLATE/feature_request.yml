@@ -1,0 +1,27 @@
+name: Design or feature proposal
+description: Describe a concrete, reusable developer problem.
+body:
+  - type: textarea
+    id: problem
+    attributes:
+      label: Developer problem
+      description: Describe the use case and its expected behaviour.
+    validations:
+      required: true
+  - type: textarea
+    id: approach
+    attributes:
+      label: Proposed scope
+      description: State the smallest useful change, configuration needs and server/client boundary.
+    validations:
+      required: true
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Existing alternatives
+      description: Link relevant libraries and explain what remains unresolved for this use case.
+  - type: textarea
+    id: validation
+    attributes:
+      label: Acceptance scenarios
+      description: Give observable success and failure cases that would demonstrate usefulness.
