@@ -1,0 +1,37 @@
+# Local credentials and configuration
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+
+# Generated output and dependencies
+/Packages/
+/ServerPackages/
+/node_modules/
+/build/
+/dist/
+/coverage/
+sourcemap.json
+
+# Roblox binary places, models and local locks
+*.rbxl
+*.rbxlx
+*.rbxm
+*.rbxmx
+*.lock
+!wally.lock
+!package-lock.json
+!pnpm-lock.yaml
+!yarn.lock
+
+# Local editor and operating-system files
+/.vscode/
+/.idea/
+.DS_Store
+Thumbs.db
+*.log
+
+# Local-only material; proprietary work belongs in separate repositories
+/private/
+/admin/
