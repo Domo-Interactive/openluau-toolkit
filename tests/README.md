@@ -1,5 +1,14 @@
-# Test strategy
+# Basic behaviour checks
 
-No executable tests or test results exist yet. This directory is reserved for future cross-package integration tests and shared synthetic fixtures. Package-specific behaviour tests will live beside their module.
+[run.luau](run.luau) contains 22 behaviour scenarios for the four modules and the shop/inventory integration. The small runner reports each failure and exits unsuccessfully when an assertion fails.
 
-The [quality plan](../docs/quality.md) defines intended validation. The [inventory design](../docs/design/inventory.md) supplies the first concrete acceptance scenarios. Select and verify a runner when implementation is authorised; do not add passing placeholders or claim Studio coverage from standalone Luau checks.
+From the repository root:
+
+```sh
+python3 scripts/bootstrap.py
+python3 scripts/check.py
+```
+
+The command also performs strict static analysis and runs the combined command-line example. Luau 0.748 is pinned and checksum-verified. The GitHub Actions workflow runs the same commands.
+
+Checks cover stack/capacity rules, immutable state, equipment movement/removal, progression thresholds/caps/rewards, damage/shield/healing rules, integer money, offer validation and successful/rejected composed purchases. The [quality record](../docs/quality.md) describes the limits. No Studio, network, storage or production checks are claimed.
