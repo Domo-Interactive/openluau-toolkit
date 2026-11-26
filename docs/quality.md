@@ -1,38 +1,33 @@
-# Quality and validation plan
+# Quality record
 
-This is a validation design. There are currently no runtime tests, CI runs, benchmark results or verified game integrations.
+## Checks executed
 
-## Checks by layer
+The initial implementation was checked on Linux x86-64 using the official Luau **0.748** command-line tools. Run `python3 scripts/bootstrap.py` and `python3 scripts/check.py` to reproduce the checks.
 
-| Layer | Required evidence before release |
+| Check | Observed result |
 | --- | --- |
-| Documentation/configuration | Resolved relative links, parseable configuration, accurate status and preserved attribution |
-| Pure rules | Strict type checks; deterministic success, rejection and boundary tests |
-| State composition | All-or-nothing mutations, consistent profile revisions and no unexpected yielding during commit |
-| Roblox adapters | Studio verification of service behaviour, server/client boundaries, startup, cancellation and cleanup |
-| Persistence | Fault injection plus Studio/backend integration, old-schema fixtures, session loss and shutdown handling |
-| Network requests | Runtime payload validation, ownership checks, bounded work and flood/replay cases |
+| Strict type analysis and Luau linting | Passed for all four modules, the test runner and the example |
+| Basic behaviour scenarios | 22 passed, 0 failed |
+| Combined command-line example | Passed: equipment, purchase, progression and shielded damage |
+| Module runtime dependencies | None |
 
-## First-module tests
+The GitHub Actions workflow runs the same commands. A workflow file alone is not evidence of a successful hosted run; consult the actual run result for a given commit.
 
-Use the [inventory acceptance scenarios](design/inventory.md) as behaviour contracts. Add generated bounded operation sequences to check conservation and no mutation on rejection where useful. Keep fixtures deterministic and failures reproducible. Tests must verify observable behaviour rather than copy the implementation's internal loops.
+## Covered behaviour
 
-Invalid numeric cases include NaN, infinity, fractional values and values outside documented bounds. Check input aliases by retaining old state and mutating returned values. Test sparse slot storage explicitly.
+- Inventory stack/capacity rules, deterministic removal/movement, rejected changes and immutable configuration/state.
+- Equipment replacement, ownership, slot configuration, movement and automatic unequipping on removal.
+- Progression exact/multiple thresholds, capped experience, reward order and no repeated reward descriptions when advancing from the returned state.
+- Combat permission rejection, flat reduction, multiplier, shields, piercing, health bounds and healing.
+- Integer money, balance limits, catalogue snapshots and successful/rejected shop purchases composed with the actual inventory module.
+- Selected invalid inputs, including negative, fractional, NaN and infinite values where relevant.
 
-## Integration fault cases
+These are basic contract checks, not exhaustive testing, benchmarking or a security audit.
 
-- Player disconnects during a pending operation.
-- Profile fails to load, becomes unavailable or loses its active session.
-- Save is throttled or times out; shutdown has limited remaining time.
-- Client repeats, floods or alters requests, including a forged actor ID or price.
-- Two server actions read the same profile revision and attempt conflicting updates.
-- A migration throws, encounters an unknown schema or receives malformed stored data.
-- A subscription, remote handler or path operation survives its owning object's destruction.
+## Not executed or implemented
 
-Specify the expected outcome before implementation. Do not treat a simulated backend as proof of platform behaviour, or describe an in-memory transaction as a durable guarantee.
+Roblox Studio loading, multiplayer requests, hit detection, storage, session loss, save failures, cross-server operations and production use have not been validated. No external developer adoption or performance result is claimed.
 
-## Performance and results
+Module states/configuration must come from the constructors and remain server-owned. An arbitrary deserialised state is outside that contract. Economy composition depends on a pure, synchronous, non-yielding inventory adapter. Progression rewards require the caller to commit delivery with the new progression state.
 
-Set supported workload limits before claiming performance. Measure module version, runtime/Studio version, fixture size, procedure and observed results. Avoid comparative speed claims without reproducible measurements.
-
-A validation record must say what ran, where it ran, the revision and the result. Mark unavailable checks as not run. Documentation review is not runtime validation; a passing CI status must correspond to real executed checks.
+Broader integration checks can be introduced when corresponding adapters exist. Current correctness claims stay limited to the rule-module behaviour above.

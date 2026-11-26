@@ -1,6 +1,6 @@
 # Planned module catalogue
 
-Everything in this catalogue is a design target. No implementation is available. Modules will have their own public types, configuration reference, errors, lifecycle notes and supported-runtime statement when built.
+Inventory/equipment, progression, combat and economy now have implementations; see the [package API guides](../packages/README.md). Player data, networking, quests/achievements, NPCs and additional diagnostics remain design targets. Studio integration has not been executed.
 
 | Module | Included responsibility | Outside its responsibility | Key validation |
 | --- | --- | --- | --- |
@@ -19,7 +19,7 @@ Everything in this catalogue is a design target. No implementation is available.
 
 A generic shop can connect the inventory, economy, networking and player-data adapters. A client sends an item ID and quantity. The server validates the request and obtains price and eligibility from authoritative configuration. One application operation calculates the currency and inventory change against the same player profile, then the persistence adapter saves that versioned state according to its documented policy.
 
-That example will need to distinguish an in-memory success from a durable save. It must not claim cross-server atomicity or exactly-once execution. The first inventory milestone stays independent of this later integration.
+The implemented shop/inventory example demonstrates the in-memory calculation only. Network validation and persistence in this scenario remain future work. There is no cross-server atomicity or exactly-once execution guarantee. Inventory remains independently usable.
 
 ## Documentation required for each implementation
 

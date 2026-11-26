@@ -1,47 +1,35 @@
-# Development and release plan
+# Development and maintenance
 
-## Current boundary
+## Current scope
 
-Only documentation and repository configuration are prepared. There is no executable source, dependency manifest, runtime test harness, Rojo project or CI workflow. Do not create these until the project owner explicitly authorises the implementation stage.
+The project owner authorised small implementations of inventory/equipment, progression, combat and economy, with basic checks and usage instructions. Those four rule modules now exist. Networking, persistence, interfaces, Studio demonstrations, tagged prereleases and external feedback are outside this stage.
 
-## First implementation sequence
+## Reproduce the checks
 
-1. Resolve the inventory design's exact API, maximum input sizes and state representation in a short design review.
-2. Choose and pin a small toolchain from official releases. Verify it on a clean checkout before documenting commands.
-3. Implement inventory validation and pure state transitions with strict types and no engine service dependency.
-4. Add meaningful tests for the published operation contracts, invariants and rejected inputs.
-5. Add a minimal server-side Studio example and verify client/server placement and module cleanup where relevant.
-6. Review the API documentation and run the release gates. Publish the first prerelease only after it contains working software.
+Install Python 3, then run these commands from a clean checkout:
 
-## Tooling decisions to verify
+```sh
+python3 scripts/bootstrap.py
+python3 scripts/check.py
+```
 
-| Need | Intended approach | Decision gate |
-| --- | --- | --- |
-| Source language | Strict Luau | Public types and strict checks pass |
-| Studio synchronisation | Rojo project for the first runnable example | Verified engine placement and reproducible build |
-| Formatting | StyLua with a pinned configuration/version | Formatter check works on a clean checkout |
-| Type analysis | Luau tooling with correct runtime definitions | Standalone and Roblox-specific code analysed in their correct environments |
-| Rule tests | Supported Luau runtime and a small maintained runner | Real assertions, repeatable results and failing exit status on failure |
-| Engine tests | Roblox Studio server/client integration harness | Reproducible procedure and documented limits on automation |
-| Dependencies | Review before choosing Wally or another route | Licence, maintenance, pinning and reproducibility checked |
-| CI | Implement verified commands as checks | Executes real checks; no placeholder green badges |
+The installer pins official Luau **0.748**, verifies its archive SHA-256 checksum and installs only the interpreter and analyser into the ignored `.tools/luau` directory. It has platform entries for Linux, macOS and Windows; execution was checked on Linux x86-64. To use a manually installed toolchain instead, put `luau` and `luau-analyze` on PATH. When `.tools/luau` exists, it takes priority.
 
-Rojo is the planned source workflow, not a runtime dependency. Do not pin an arbitrary version or choose an archived test framework just because an old tutorial uses it. Headless rule tests cannot establish DataStore or multiplayer correctness in Studio.
+The check command analyses every Luau source, example and test file, runs 22 behaviour scenarios and runs the combined example. The same commands are configured in a read-only GitHub Actions job, with checkout pinned to an exact upstream commit.
 
-## Dependency review
+## Implementation choices
 
-Record the problem solved, upstream maintenance, supported runtime, licence, transitive requirements and exact selected version. Prefer optional adapters around existing primitives. Review ProfileStore as a persistence candidate rather than writing session-locking infrastructure from scratch. No candidate is currently installed or approved as a dependency.
+- Each gameplay module is one source file, with strict exported types and no runtime dependencies.
+- Returned records and nested state/configuration are frozen. Mutations return new state, with stable error strings for expected rejection.
+- Inventory uses sparse, bounded slot indexes; equippable items have stack size one.
+- Progression accepts explicit cumulative thresholds and emits reward descriptions for levels crossed by the current operation.
+- Combat performs numeric resolution with a caller-supplied permission decision; it does not detect hits.
+- Economy injects a pure inventory function rather than importing a mandatory framework or package loader.
 
-When dependencies are introduced, commit the applicable lockfile and required notices. Verify first-party source rather than copying third-party implementations from tutorials.
+The [API guides](../packages/README.md) and [usage guide](usage.md) give exact contracts and limitations. No shared runtime kernel, custom networking layer or persistence engine was introduced.
 
-## Release gates
+## Make a focused change
 
-The first usable prerelease needs working source, a repeatable toolchain, successful contract tests, correct runtime placement, a verified example, API/error documentation, licence review and a changelog describing the actual change. Document failures and unsupported behaviour.
+Start from a reproducible defect or a concrete reusable need. Update the smallest relevant module and its documentation. Add a behaviour check when it protects a real contract, then run the check command. Report what actually ran. Keep future proprietary games and their configuration in separate repositories.
 
-Adopt semantic versioning once code releases start. Changes to a prerelease API must be recorded explicitly. Publish a release artefact or package only after verifying its contents against its tag. Do not publish a documentation scaffold as a functional module release.
-
-Start with one verified distribution route. Decide separate package versioning when a second package creates a real need; avoid release automation for a collection of empty folders.
-
-## Maintainer work
-
-Use Issues for reproducible defects, design decisions and integration feedback. Use pull requests for reviewable changes. Update examples when APIs change and retain migration notes for released behaviour. Record actual testing environments and feedback with permission. Maintenance claims should be supported by public work, without invented backdated commits or metrics.
+API changes are currently unreleased and must be noted in the changelog. Do not add a release number, package-manager manifest or compatibility claim without verifying the corresponding distribution. Studio verification, broader integration tests and a formal prerelease can be added when useful; they are not compulsory prerequisites for submitting an accurate programme application.

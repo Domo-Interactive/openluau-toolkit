@@ -1,6 +1,6 @@
 # Architecture
 
-**Design status:** proposed implementation architecture. No modules or APIs exist yet.
+**Current implementation:** inventory/equipment, progression, combat and economy rule modules are implemented. Engine, networking and persistence adapters remain proposed. See the [API guides](../packages/README.md) for current contracts.
 
 ## Composition
 
@@ -17,7 +17,7 @@ Avoid a shared runtime kernel until a concrete repeated requirement justifies on
 
 ## Package organisation
 
-The current `packages/` directory contains documentation only. When a package is authorised, add `src/`, `tests/` and a README inside its own directory. Separate `rules`, `server` and `shared` source only when each has an actual purpose. Add a client adapter only where needed.
+Each current package contains one standalone source file under `src/` and an API README. Shared behaviour checks are in `tests/run.luau`. Add server/client adapters only when an actual integration requires them.
 
 Avoid a root aggregate module that requires everything. Individual package manifests and a release build should expose only that package's documented dependencies. Do not publish empty packages or manifests claiming an available version.
 
@@ -53,7 +53,7 @@ Operations on one player's currency and inventory must run against one authorita
 
 An atomic in-memory change is not a durable distributed transaction. Persistence design must separately define when data is saved, how a lost session stops mutations, and what a crash or timeout can lose. Cross-profile trades and payment receipts need separate designs.
 
-Expected input rejection uses stable error codes with documented meanings. Broken programmer invariants may raise errors. Asynchronous adapters must define completion, cancellation, timeout and cleanup behaviour explicitly. No universal promise or event implementation is selected yet.
+Expected input rejection uses stable error codes with documented meanings. Broken programmer invariants may raise errors. Asynchronous adapters must define completion, cancellation, timeout and cleanup behaviour explicitly. No promise or event implementation is required by the current rule modules.
 
 ## Persistence and migration
 
