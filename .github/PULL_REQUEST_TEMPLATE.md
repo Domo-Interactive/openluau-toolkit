@@ -8,7 +8,7 @@ List checks actually performed and their outcomes. State what was not run.
 
 ## Scope and compatibility
 
-Identify changed proposals, public interfaces, dependencies or migration needs. Runtime implementation requires prior project-owner authorisation.
+Identify changed proposals, public interfaces, dependencies or migration needs. Discuss additional systems before expanding the current four-module scope.
 
 ## Contribution checks
 
