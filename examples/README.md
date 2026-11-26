@@ -1,9 +1,9 @@
-# Examples and tutorials
+# Example
 
-There are no executable examples yet. This directory will contain minimal public integrations after the project owner authorises implementation.
+[basic.luau](basic.luau) is a working standalone integration of all four modules. It creates a bag, equips a sword, buys two potions, awards level-up experience and resolves shielded damage.
 
-The first example will demonstrate inventory rules on the server using synthetic item definitions. Two configurations—a small collectible bag and a larger resource container—will exercise the same module. It will reset when the session ends and make no persistence claim.
+Run `python3 scripts/bootstrap.py`, then `python3 scripts/check.py` from the repository root. To run just the example on Linux/macOS after installation, use `.tools/luau/luau examples/basic.luau`.
 
-Later examples can connect a validated shop request to currency, inventory and persistence. Each example must identify its required toolkit version, setup, Studio placement, expected result, rejected-action scenario, cleanup and limitations.
+The example's string-path requires target the standalone Luau CLI. In Roblox Studio, replace those lines with references to the corresponding ModuleScript Instances; see [usage](../docs/usage.md). A Studio demonstration has not been run.
 
-Use original or appropriately licensed materials. Keep proprietary game code and assets in separate repositories. See the [scope](../docs/scope.md) and [quality plan](../docs/quality.md).
+The example keeps all state in memory, uses synthetic definitions and resets on exit. It does not include a user interface, networking, persistent data, real-money purchases or proprietary game material.
