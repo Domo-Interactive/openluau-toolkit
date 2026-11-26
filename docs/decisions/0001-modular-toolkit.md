@@ -1,6 +1,6 @@
 # Decision 0001: independently usable gameplay modules
 
-Status: accepted for repository planning; implementation remains unauthorised.
+Status: accepted and used for the initial four rule modules. Broader engine integrations remain outside the current scope.
 
 ## Context
 
@@ -16,7 +16,7 @@ Use one repository to keep related documentation and reviews together. Defer pac
 
 Developers retain control over presentation, game loop and preferred framework. Rule modules can be exercised deterministically. Integration examples and adapters require deliberate work rather than being hidden behind a universal loader. The project must define ownership, cleanup and cross-module consistency explicitly.
 
-The initial inventory scope omits unique equipment, trading and persistence. These need later designs. Breadth remains a roadmap objective rather than a first-release requirement.
+The initial inventory scope omits unique equipment metadata, trading and persistence. Configurable equipment-slot rules are included. These need later designs. Breadth remains a roadmap objective rather than a first-release requirement.
 
 ## Alternatives considered
 
