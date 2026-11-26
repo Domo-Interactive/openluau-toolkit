@@ -1,0 +1,31 @@
+name: Bug report
+description: Report a reproducible defect in documentation or an implemented module.
+body:
+  - type: markdown
+    attributes:
+      value: "The project is currently documentation-only. Use the security policy for vulnerability reports."
+  - type: input
+    id: version
+    attributes:
+      label: Version or commit
+      description: Identify the documentation revision or module version you used.
+    validations:
+      required: true
+  - type: textarea
+    id: reproduction
+    attributes:
+      label: Reproduction
+      description: Provide exact steps and a minimal example using synthetic data.
+    validations:
+      required: true
+  - type: textarea
+    id: behaviour
+    attributes:
+      label: Expected and actual behaviour
+    validations:
+      required: true
+  - type: textarea
+    id: environment
+    attributes:
+      label: Environment
+      description: For runtime issues, include Studio/tool versions and server or client context. For documentation, include the affected path.
