@@ -1,12 +1,12 @@
 # Inventory module design
 
-**Status:** proposed first implementation. Names below describe operations and data; they are not released API signatures.
+**Status:** the rule operations are now implemented, including configurable equipment slots. The [inventory API guide](../../packages/inventory/README.md) is authoritative for current signatures and error codes. The design below records the original rule contracts; there is no tagged release.
 
 ## First useful scope
 
 A deterministic inventory rule module with no Roblox service, persistence, networking or UI dependency. It manages stackable, fungible items in a bounded set of slots. Definitions and capacity are caller-configurable.
 
-Version one excludes unique equipment metadata, durability, trading, world drops and automatic persistence. Equipment can later use a separately specified extension rather than forcing every inventory item into a gear model.
+The initial implementation excludes unique equipment metadata, durability, trading, world drops and persistence. Equippable definitions identify one configured equipment slot and must have stack size one; equipment tracks an owned bag slot.
 
 ## Data model
 
@@ -21,7 +21,7 @@ Version one excludes unique equipment metadata, durability, trading, world drops
 
 Use a slot representation whose empty positions do not rely on Lua's length operator for sparse arrays. Validate capacity and slot indexes explicitly. Document an encoding for persistence separately from the in-memory representation.
 
-Apply hard limits to capacity, definition count and input string lengths. Decide concrete defaults and maximum supported bounds during implementation, document them, and exercise them in tests. Do not rely on the floating-point safe-integer ceiling as an economic or gameplay policy.
+The implementation bounds capacity to 512 slots, definitions to 1,024 entries, identifiers to 96 bytes, equipment slots to 32 and stack/operation quantities to 1,000,000. Do not rely on the floating-point safe-integer ceiling as an economic or gameplay policy.
 
 ## Operation contracts
 
@@ -35,7 +35,7 @@ Apply hard limits to capacity, definition count and input string lengths. Decide
 
 Add and remove are all-or-nothing. No partial acceptance is implied. Moving a slot onto itself is a successful no-op. Swapping incompatible stacks and moving a partial source stack are outside the initial contract.
 
-Expected rejection codes should distinguish invalid input, unknown item, insufficient items, insufficient capacity and incompatible target. Export the final error set alongside the API. Error results must not leak mutable references to internal state.
+The API guide lists the implemented error codes for invalid input, unknown items, insufficient items, capacity and incompatible targets. Error results must not leak mutable references to internal state.
 
 ## Invariants
 
@@ -67,4 +67,4 @@ Expected rejection codes should distinguish invalid input, unknown item, insuffi
 
 ## Integration proof
 
-After implementation is authorised, verify the rules in a supported standalone Luau runtime and in a minimal Studio example. Keep the example state on the server and document its reset-on-exit behaviour. It must require no other toolkit gameplay module. A later networking example will add malicious-client scenarios; the standalone module alone does not secure a game.
+The rule module passes the recorded standalone Luau checks without another gameplay module. The combined command-line example also uses it with the economy module. Studio integration and malicious-client scenarios have not been executed; the standalone module alone does not secure a game.
