@@ -1,7 +1,7 @@
 # Project working instructions
 
-- Current stage: repository establishment, architecture and documentation.
-- Do not implement game systems, executable examples, runtime tests or package publishing until the project owner explicitly authorises implementation. Documentation and repository configuration may be maintained now.
+- Current authorised stage: implement inventory/equipment, experience/progression, combat/damage and economy/shops, with basic behaviour checks and usage instructions.
+- Keep the implementation small. Networking, persistence, user interfaces, Studio demonstrations, formal releases and external feedback are outside this stage.
 - Use Australian English. Keep current capabilities separate from proposed behaviour.
 - Keep all game-specific code, assets, credentials, player records and private application materials outside this repository.
 - Prefer small, independently usable modules with explicit dependencies and server-authoritative integration.

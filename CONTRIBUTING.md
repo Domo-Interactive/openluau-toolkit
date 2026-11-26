@@ -1,38 +1,24 @@
 # Contributing
 
-The project is currently defining its architecture and first useful module. Documentation corrections, concrete use cases and design reviews are welcome. Game-system implementation is paused until the project owner explicitly authorises that stage.
+The initial implementation covers inventory/equipment, progression, combat and economy. Focused fixes, documentation corrections and concrete use cases are welcome. Discuss additional systems or dependencies before expanding the scope.
 
-## Propose a change
+## Propose and review a change
 
-Open an issue explaining the developer problem, an example of the expected behaviour and why an existing library or a smaller change would not address it. For a new module or dependency, discuss the design before writing an implementation.
+1. Explain the developer problem and observable expected behaviour in an issue or pull request.
+2. Make one coherent change using Australian English in documentation.
+3. Keep gameplay rules independent of Roblox services, presentation and unrelated modules.
+4. Update the module's API/error documentation and add a meaningful regression check when behaviour changes.
+5. Run `python3 scripts/check.py` and report actual results. State any checks not run.
+6. Preserve applicable licences and confirm that contributed material can be distributed under the repository's MIT licence.
 
-Keep proposals genre-independent. Use fictional item identifiers and synthetic data. Do not include private game assets, player records or proprietary code.
+Install the pinned development tools with `python3 scripts/bootstrap.py`. The [development guide](docs/development.md) describes the workflow. Studio integration and a formal release are not required for each change to these pure rule modules.
 
-## Prepare a pull request
+## Code expectations
 
-1. Fork the repository and create a focused branch.
-2. Make one coherent change with documentation in Australian English.
-3. Describe the resulting behaviour and any compatibility consequences.
-4. Record checks actually performed, including their environment and outcome. State when a check was not run.
-5. Confirm that you can contribute the material under the repository's MIT licence. Preserve any required third-party notices.
+Use strict Luau types, explicit configuration and bounded inputs. Existing module states and results are immutable; mutations return new state or an expected error without changing the input. Keep dictionary iteration deterministic where it affects observable output.
 
-A maintainer reviews changes before merging. A proposal or pull request does not imply a commitment to implement or provide a response within a fixed period.
+The economy inventory adapter must be pure, synchronous and non-yielding. Progression rewards are descriptions for the consuming game to apply alongside the new state. Do not add hidden storage, remotes, global state or automatic background work.
 
-## Documentation review
+Use synthetic data. Keep credentials, private application materials, proprietary game code/assets and player records outside this repository. Do not imply production validation, upstream endorsement or adoption without evidence.
 
-Check relative links, current/planned status, terminology and source attribution. Do not present proposed APIs as callable functions. Research documents should link to primary sources and distinguish upstream facts from project decisions.
-
-## Implementation standards for the authorised stage
-
-- Use `--!strict` for Luau source and exported types for public interfaces.
-- Keep module initialisation free of implicit network, persistence or global game-state changes.
-- Accept dependencies explicitly; keep the dependency graph acyclic.
-- Define expected failures, bounds, cleanup and server/client access.
-- Include behaviour tests for edge cases and misuse. Cover engine interactions in Roblox Studio separately.
-- Add an example only when it works with the documented version.
-
-The [development plan](docs/development.md) and [quality plan](docs/quality.md) define the intended checks. Tool versions, commands and CI will be introduced and verified when implementation is authorised; no runtime checks are currently configured.
-
-## Discussion and reporting
-
-Keep reviews specific and respectful. Address behaviour and evidence. Use the repository's Issues tab for ordinary defects or proposals. Follow the [security policy](SECURITY.md) for vulnerabilities.
+A maintainer reviews changes before merging. No fixed response time is promised. Use [SECURITY.md](SECURITY.md) for vulnerabilities and keep discussion specific and respectful.

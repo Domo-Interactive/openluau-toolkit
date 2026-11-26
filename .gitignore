@@ -12,6 +12,8 @@
 /build/
 /dist/
 /coverage/
+/.tools/
+__pycache__/
 sourcemap.json
 
 # Roblox binary places, models and local locks
